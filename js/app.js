@@ -14,7 +14,7 @@ fly.app = fly.app || {};
 
       var x = d3.scale.linear()
           .range([0, width - margin.left - margin.right])
-          .domain([0, maxFile]);
+          .domain([0, 100]);
       var y = d3.scale.linear()
           .range([height - margin.top - margin.bottom, 0])
           .domain([0, maxAlt]);
@@ -51,11 +51,11 @@ fly.app = fly.app || {};
         .data([data]);
 
       var altLine = d3.svg.line()
-        .x(function(d, i) {return x(d.file);})
+        .x(function(d, i) {return x(d.pcent_flt_complete);})
         .y(function(d, i) {return y(d.altitude);});
 
       var speedLine = d3.svg.line()
-        .x(function(d, i) {return x(d.file);})
+        .x(function(d, i) {return x(d.pcent_flt_complete);})
         .y(function(d, i) {return speedY(d.gspeed);});
 
       dataLines
