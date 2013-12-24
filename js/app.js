@@ -4,6 +4,7 @@ fly.app = fly.app || {};
 (function(air) {
 
   draw = function(data) {
+    drawMap(data);
     var margin = {top: 10, right: 20, bottom: 25, left: 10},
       width = ($('#viz').width()) - margin.left - margin.right,
       height = 400 - margin.top - margin.bottom;
@@ -69,6 +70,28 @@ fly.app = fly.app || {};
         .append('path')
             .attr('class', 'speed-line')
             .attr('d', speedLine(data));
+  };
+
+  drawMap = function(data) {
+    var mapOptions = {
+      zoom: 5,
+      center: new google.maps.LatLng(37.00995042446293, -117.10929589843748),
+      mapTypeId: google.maps.MapTypeId.SATELLITE,
+      disableDefaultUI: true,
+      zoomControl: true
+    };
+
+    map = new google.maps.Map(document.getElementById('map'),
+        mapOptions);
+
+    _.each(data, function(d) {
+      var pos = new google.maps.LatLng(d.latitude, d.longitude);
+      console.log(pos);
+      var marker = new google.maps.Marker({
+        position: pos,
+        map: map
+      });
+    });
   };
 
   air.init = function() {
