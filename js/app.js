@@ -74,8 +74,8 @@ fly.app = fly.app || {};
 
   drawMap = function(data) {
     var mapOptions = {
-      zoom: 5,
-      center: new google.maps.LatLng(37.00995042446293, -117.10929589843748),
+      zoom: 6,
+      center: new google.maps.LatLng(data[0].latitude, data[0].longitude),
       mapTypeId: google.maps.MapTypeId.SATELLITE,
       disableDefaultUI: true,
       zoomControl: true
@@ -84,26 +84,42 @@ fly.app = fly.app || {};
     map = new google.maps.Map(document.getElementById('map'),
         mapOptions);
 
+    initPath(data, map);
+    animateFlight(data, map);
+  };
+
+  initPath = function(data, map) {
     var polyOptions = {
       strokeColor: '#315B7E',
       strokeWeight: 3
     };
 
     var line = new google.maps.Polyline(polyOptions);
-
     line.setMap(map);
+
     var path = line.getPath();
 
     _.each(data, function(d) {
       var pos = new google.maps.LatLng(d.latitude, d.longitude);
-
       path.push(pos);
+    });
+  };
 
-      // var marker = new google.maps.Marker({
-      //   position: pos,
-      //   map: map
-      // });
+  animateFlight = function(data, map) {
+    var initialPos = new google.maps.LatLng(data[0].latitude, data[0].longitude);
 
+    var marker = new google.maps.Marker({
+      position: initialPos,
+      map: map,
+      icon: 'http://maps.google.com/mapfiles/ms/micons/plane.png'
+    });
+
+    _.each(data, function(d, i) {
+      setTimeout(function() {
+        var pos = new google.maps.LatLng(d.latitude, d.longitude);
+        marker.setPosition(pos);
+        map.setCenter(pos);
+      }, 500 + i*50);
     });
   };
 
