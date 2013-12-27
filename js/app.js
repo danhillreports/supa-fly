@@ -84,13 +84,26 @@ fly.app = fly.app || {};
     map = new google.maps.Map(document.getElementById('map'),
         mapOptions);
 
+    var polyOptions = {
+      strokeColor: '#315B7E',
+      strokeWeight: 3
+    };
+
+    var line = new google.maps.Polyline(polyOptions);
+
+    line.setMap(map);
+    var path = line.getPath();
+
     _.each(data, function(d) {
       var pos = new google.maps.LatLng(d.latitude, d.longitude);
-      console.log(pos);
-      var marker = new google.maps.Marker({
-        position: pos,
-        map: map
-      });
+
+      path.push(pos);
+
+      // var marker = new google.maps.Marker({
+      //   position: pos,
+      //   map: map
+      // });
+
     });
   };
 
